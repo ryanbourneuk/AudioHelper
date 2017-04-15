@@ -57,7 +57,7 @@ void AudioHelper::playBackgroundMusic(string track) {
   
   currentBackgroundMusic = track;
   
-  SimpleAudioEngine::getInstance()->playBackgroundMusic(getPlatformSpecificTrackNameWith(track, true).c_str(),true);
+  SimpleAudioEngine::getInstance()->playBackgroundMusic(getPlatformSpecificTrackNameWith(track, true).c_str(), true);
 }
 
 void AudioHelper::stopBackgroundMusic() {
@@ -92,10 +92,10 @@ void AudioHelper::advertFinished() {
 
 string AudioHelper::getPlatformSpecificTrackNameWith(string track, bool backing) {
 #if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
-  return StringUtils::format("snd_%s.ogg",track.c_str());
+  return StringUtils::format("%s.ogg", track.c_str());
 #elif CC_TARGET_PLATFORM == CC_PLATFORM_IOS
   string fileFormat = backing ? "m4a" : "caf";
-  return StringUtils::format("snd_%s.%s",track.c_str(),fileFormat.c_str());
+  return StringUtils::format("%s.%s", track.c_str(), fileFormat.c_str());
 #endif
 }
 
@@ -103,6 +103,10 @@ void AudioHelper::setBackgroundVolume(int volume) {
   backgroundVolume = volume;
   
   SimpleAudioEngine::getInstance()->setBackgroundMusicVolume(((float) volume) / 100);
+  
+  if (volume == 0) {
+    currentBackgroundMusic = "";
+  }
 }
 
 void AudioHelper::setEffectsVolume(int volume) {

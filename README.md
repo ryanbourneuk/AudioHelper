@@ -10,9 +10,9 @@ I am still learning C++. It may have underlying issues which will be fixed later
 In Asterun, there was never a centralised point to manage game audio from. This meant that managing any audio code became difficult, and a chore - and that sucks. AudioHelper fixes this by providing a centralised point where *all* audio is managed, along with some custom logic to handle volumes, interuptions and different file formats on iOS & Android.
 
 The *AudioHelper* class consists of a few basic, lightweight files:
-	* AudioHelper - which allows your class to talk to an audio framework of your choosing!
-	* AudioImpl_SAE / AudioImpl_AE - the implementations of either framework which AudioHelper talks to, to make the audio magic happen!
-		* You only need one or the other, depending on your choice of framework.
+* AudioHelper - which allows your class to talk to an audio framework of your choosing!
+* AudioImpl_SAE / AudioImpl_AE - the implementations of either framework which AudioHelper talks to, to make the audio magic happen!
+	* You only need one or the other, depending on your choice of framework.
 
 ## Give an example of how this helps!
 

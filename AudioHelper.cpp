@@ -25,19 +25,26 @@
 
 #include "AudioHelper.h"
 
-AudioHelper* AudioHelper::m_mySingleton = NULL;
+AudioHelper* AudioHelper::audioHelperSingleton = NULL;
 
 AudioHelper::AudioHelper() {
   
 }
 
+AudioHelper::~AudioHelper() {
+  delete audioImpl;
+  audioImpl = NULL;
+}
+
 AudioHelper* AudioHelper::sharedAudioHelper() {
-  if (NULL == m_mySingleton) {
-    m_mySingleton = new AudioHelper();
-    m_mySingleton->setStartingValues();
+  if (NULL == audioHelperSingleton) {
+    audioHelperSingleton = new AudioHelper();
+    audioHelperSingleton->audioImpl = new AudioImpl();
+    
+    audioHelperSingleton->setStartingValues();
   }
   
-  return m_mySingleton;
+  return audioHelperSingleton;
 }
 
 void AudioHelper::setStartingValues() {
@@ -45,11 +52,11 @@ void AudioHelper::setStartingValues() {
 }
 
 void AudioHelper::preloadBackgroundMusic(string track) {
-  SimpleAudioEngine::getInstance()->preloadBackgroundMusic(getPlatformSpecificTrackNameWith(track, true).c_str());
+  audioImpl->preloadBackgroundMusic(getPlatformSpecificTrackNameWith(track, true));
 }
 
 void AudioHelper::preloadEffect(string track) {
-  SimpleAudioEngine::getInstance()->preloadEffect(getPlatformSpecificTrackNameWith(track, false).c_str());
+  audioImpl->preloadEffect(getPlatformSpecificTrackNameWith(track, false));
 }
 
 void AudioHelper::playBackgroundMusic(string track) {
@@ -57,25 +64,25 @@ void AudioHelper::playBackgroundMusic(string track) {
   
   currentBackgroundMusic = track;
   
-  SimpleAudioEngine::getInstance()->playBackgroundMusic(getPlatformSpecificTrackNameWith(track, true).c_str(), true);
+  audioImpl->playBackgroundMusic(getPlatformSpecificTrackNameWith(track, true));
 }
 
 void AudioHelper::stopBackgroundMusic() {
-  SimpleAudioEngine::getInstance()->stopBackgroundMusic();
+  audioImpl->stopBackgroundMusic();
 }
 
 void AudioHelper::pauseBackgroundMusic() {
-  SimpleAudioEngine::getInstance()->pauseBackgroundMusic();
+  audioImpl->pauseBackgroundMusic();
 }
 
 void AudioHelper::resumeBackgroundMusic() {
-  SimpleAudioEngine::getInstance()->resumeBackgroundMusic();
+  audioImpl->resumeBackgroundMusic();
 }
 
 void AudioHelper::playEffect(string track) {
   if (effectsVolume == 0) return;
   
-  SimpleAudioEngine::getInstance()->playEffect(getPlatformSpecificTrackNameWith(track, false).c_str());
+  audioImpl->playEffect(getPlatformSpecificTrackNameWith(track, false));
 }
 
 void AudioHelper::advertStarted() {
@@ -102,7 +109,7 @@ string AudioHelper::getPlatformSpecificTrackNameWith(string track, bool backing)
 void AudioHelper::setBackgroundVolume(int volume) {
   backgroundVolume = volume;
   
-  SimpleAudioEngine::getInstance()->setBackgroundMusicVolume(((float) volume) / 100);
+  audioImpl->setBackgroundVolume(volume);
   
   if (volume == 0) {
     currentBackgroundMusic = "";
@@ -112,5 +119,5 @@ void AudioHelper::setBackgroundVolume(int volume) {
 void AudioHelper::setEffectsVolume(int volume) {
   effectsVolume = volume;
   
-  SimpleAudioEngine::getInstance()->setEffectsVolume(((float) volume) / 100);
+  audioImpl->setEffectsVolume(volume);
 }

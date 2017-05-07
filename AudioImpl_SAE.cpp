@@ -1,5 +1,5 @@
 //
-//  AudioHelper.h
+//  AudioImpl_SAE.cpp
 //
 //  Copyright (c) 2017 Ryan Bourne. All rights reserved.
 //  https://www.ryanbournedev.wordpress.com & https://twitter.com/ryanbourne28
@@ -23,53 +23,48 @@
 //  THE SOFTWARE.
 //
 
-#ifndef AudioHelper_h
-#define AudioHelper_h
-
-#include "cocos2d.h"
 #include "AudioImpl_SAE.h"
+#include "SimpleAudioEngine.h"
 
-using namespace cocos2d;
-using namespace std;
+using namespace CocosDenshion;
 
-class AudioHelper {
-private:
-  AudioHelper();
-  ~AudioHelper();
-  
-  static AudioHelper* audioHelperSingleton;
-  
-  AudioImpl* audioImpl;
-  
-public:
-  static AudioHelper* sharedAudioHelper();
-  
-  void setStartingValues();
-  
-  void preloadBackgroundMusic(string track);
-  void preloadEffect(string track);
-  
-  void playBackgroundMusic(string track);
-  void stopBackgroundMusic();
-  
-  void pauseBackgroundMusic();
-  void resumeBackgroundMusic();
-  
-  void playEffect(string track);
-  
-  void advertStarted();
-  void advertFinished();
-  
-  string getPlatformSpecificTrackNameWith(string track, bool backing);
-  
-  void setBackgroundVolume(int volume);
-  void setEffectsVolume(int volume);
-  
-  int backgroundVolume;
-  int effectsVolume;
-  
-private:
-  string currentBackgroundMusic;
-};
+AudioImpl::AudioImpl() { }
 
-#endif /* AudioHelper_h */
+AudioImpl::~AudioImpl() { }
+
+void AudioImpl::preloadBackgroundMusic(string track) {
+  SimpleAudioEngine::getInstance()->preloadBackgroundMusic(track.c_str());
+}
+
+void AudioImpl::preloadEffect(string track) {
+  SimpleAudioEngine::getInstance()->preloadEffect(track.c_str());
+}
+
+void AudioImpl::playBackgroundMusic(string track) {
+  SimpleAudioEngine::getInstance()->playBackgroundMusic(track.c_str(), true);
+}
+
+void AudioImpl::stopBackgroundMusic() {
+  SimpleAudioEngine::getInstance()->stopBackgroundMusic();
+}
+
+void AudioImpl::pauseBackgroundMusic() {
+  SimpleAudioEngine::getInstance()->pauseBackgroundMusic();
+}
+
+void AudioImpl::resumeBackgroundMusic() {
+  SimpleAudioEngine::getInstance()->resumeBackgroundMusic();
+}
+
+void AudioImpl::playEffect(string track) {
+  SimpleAudioEngine::getInstance()->playEffect(track.c_str());
+}
+
+void AudioImpl::setBackgroundVolume(int volume) {
+  SimpleAudioEngine::getInstance()->setBackgroundMusicVolume(((float) volume) / 100);
+}
+
+void AudioImpl::setEffectsVolume(int volume) {
+  SimpleAudioEngine::getInstance()->setEffectsVolume(((float) volume) / 100);
+}
+

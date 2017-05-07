@@ -1,5 +1,5 @@
 //
-//  AudioHelper.h
+//  AudioImpl_AE.h
 //
 //  Copyright (c) 2017 Ryan Bourne. All rights reserved.
 //  https://www.ryanbournedev.wordpress.com & https://twitter.com/ryanbourne28
@@ -23,28 +23,17 @@
 //  THE SOFTWARE.
 //
 
-#ifndef AudioHelper_h
-#define AudioHelper_h
+#ifndef AudioImpl_AE_h
+#define AudioImpl_AE_h
 
 #include "cocos2d.h"
-#include "AudioImpl_SAE.h"
 
-using namespace cocos2d;
 using namespace std;
 
-class AudioHelper {
-private:
-  AudioHelper();
-  ~AudioHelper();
-  
-  static AudioHelper* audioHelperSingleton;
-  
-  AudioImpl* audioImpl;
-  
+class AudioImpl {
 public:
-  static AudioHelper* sharedAudioHelper();
-  
-  void setStartingValues();
+  AudioImpl();
+  ~AudioImpl();
   
   void preloadBackgroundMusic(string track);
   void preloadEffect(string track);
@@ -57,19 +46,13 @@ public:
   
   void playEffect(string track);
   
-  void advertStarted();
-  void advertFinished();
-  
-  string getPlatformSpecificTrackNameWith(string track, bool backing);
-  
   void setBackgroundVolume(int volume);
   void setEffectsVolume(int volume);
   
-  int backgroundVolume;
-  int effectsVolume;
+  int backgroundMusicID;
   
-private:
-  string currentBackgroundMusic;
+  float backgroundVolume;
+  float effectsVolume;
 };
 
-#endif /* AudioHelper_h */
+#endif /* AudioImpl_AE_h */
